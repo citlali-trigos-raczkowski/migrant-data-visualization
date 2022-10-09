@@ -55,34 +55,72 @@ st.map(migrantdf)
 st.markdown("Data for the above visualization can be explored below:")
 
 df1 = df.groupby(['Migration route','Season','Incident year'])['Total Number of Dead and Missing'].sum().reset_index(name='count')
-df2 = df.groupby(['Migration route','Cause of Death'])['Total Number of Dead and Missing'].sum().reset_index(name='Total Number of Dead and Missing')
-
+df2 = df.groupby(['Migration route','Cause of Death','Cause of Death Abbreviation'])['Total Number of Dead and Missing'].sum().reset_index(name='Total Number of Dead and Missing')
+df3 = df.groupby(['Migration route','Incident year', 'Reported Month'])[['Total Number of Dead and Missing','Minimum Estimated Number of Missing','Number of Females', 'Number of Males', 'Number of Children','Number of Survivors']].sum().reset_index()
 def plot_deaths_season(m_route,df):
     dft = df[df['Migration route'] == m_route]
 
     fig = px.line(dft,x='Incident year',y='count',color='Season',title=f"Deaths per Season in {m_route}")
-
+    fig.update_layout({
+    'plot_bgcolor': 'rgba(0, 0, 0, 0)',
+    'paper_bgcolor': 'rgba(0, 0, 0, 0)',
+    })
     st.write(fig)
 
-def plot_deaths_cause(m_route,df):
-    dft = df[df['Migration route'] == m_route].sort_values(by='Total Number of Dead and Missing',ascending=False)
-    fig = px.bar(dft,x='Cause of Death',y='Total Number of Dead and Missing',
-            title=f"Cause of Death in {m_route}")
+#Still in Development, i don't know how to show it 
+def plot_deaths_month(m_route,df):
+    dft = df[df['Migration route'] == m_route]
+
+    fig = px.line(dft,x='date',y='Total Number of Dead and Missing',color='Reported Month',title=f"Deaths per Season in {m_route}")
+    fig.update_layout({
+    'plot_bgcolor': 'rgba(0, 0, 0, 0)',
+    'paper_bgcolor': 'rgba(0, 0, 0, 0)',
+    })
+    st.write(fig)
+
+def plot_deaths_cause(m_route,causes,df):
+    dft = df[df['Migration route'] == m_route].sort_values(by='Total Number of Dead and Missing',ascending=False).reset_index()
+    if causes:
+        colors = ['lightslategray',] * dft.shape[0]
+        for i in causes:
+            try:
+                index = dft[dft['Cause of Death'] == i].index
+                colors[index[0]] = 'crimson'
+            except:
+                pass
+        fig = px.bar(dft,x='Cause of Death Abbreviation',y='Total Number of Dead and Missing',
+                title=f"Cause of Death in {m_route}",color=colors)
+    else:
+        fig = px.bar(dft,x='Cause of Death Abbreviation',y='Total Number of Dead and Missing',
+                title=f"Cause of Death in {m_route}")
+
+    fig.update_layout({
+    'plot_bgcolor': 'rgba(0, 0, 0, 0)',
+    'paper_bgcolor': 'rgba(0, 0, 0, 0)',
+    })
 
     st.write(fig)
 
 def plot_comp(m_route,cause,df):
     dft = df[(df['Migration route'].isin( m_route)) & (df['Cause of Death'].isin(cause))].sort_values(by='Total Number of Dead and Missing',ascending=False)
-    fig = px.bar(dft,x='Cause of Death',y='Total Number of Dead and Missing', color='Migration route',barmode='group',
+    fig = px.bar(dft,x='Cause of Death Abbreviation',y='Total Number of Dead and Missing', color='Migration route',barmode='group',
             title="Number of Dead by Cause of Death")
+    
+    fig.update_layout({
+    'plot_bgcolor': 'rgba(0, 0, 0, 0)',
+    'paper_bgcolor': 'rgba(0, 0, 0, 0)',
+    })
 
     st.write(fig)
-if len(route_input) > 0 and len(cause_of_death_input) > 0:
-    plot_comp(route_input,cause_of_death_input,df2)
+
 if len(route_input) > 0:
     for i in route_input:
         plot_deaths_season(i,df1)
-        plot_deaths_cause(i,df2)
+        plot_deaths_cause(i,cause_of_death_input,df2)
+        
+if len(route_input) > 0 and len(cause_of_death_input) > 0:
+    plot_comp(route_input,cause_of_death_input,df2)
+    
 
 
 st.dataframe(df.head())
