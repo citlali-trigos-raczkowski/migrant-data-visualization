@@ -36,7 +36,7 @@ st.markdown("Data collected by the Missing Migrant Project spanning years 2014 -
 
 # 1. Streamlit needs lat and lon columns to plot points
 # TODO: THIS IS NOT CORRECT. Need a transformation for (X,Y) --> long,lat
-df = df.rename(columns={"X": "lat", "Y": "lon"})
+df = df.rename(columns={"X": "lon", "Y": "lat"})
 
 migrantdf = df
 
