@@ -55,7 +55,7 @@ st.map(migrantdf)
 st.markdown("Data for the above visualization can be explored below:")
 
 df1 = df.groupby(['Migration route','Season','Incident year'])['Total Number of Dead and Missing'].sum().reset_index(name='count')
-df2 = df.groupby(['Migration route','Cause of Death','Cause of Death Abbreviation'])['Total Number of Dead and Missing'].sum().reset_index(name='Total Number of Dead and Missing')
+df2 = df.groupby(['Migration route','Cause of Death','Cause of Death Abbreviation'])[['Total Number of Dead and Missing','Minimum Estimated Number of Missing','Number of Females', 'Number of Males', 'Number of Children','Number of Survivors']].sum().reset_index()
 df3 = df.groupby(['Migration route','Incident year', 'Reported Month'])[['Total Number of Dead and Missing','Minimum Estimated Number of Missing','Number of Females', 'Number of Males', 'Number of Children','Number of Survivors']].sum().reset_index()
 def plot_deaths_season(m_route,df):
     dft = df[df['Migration route'] == m_route]
@@ -113,6 +113,36 @@ def plot_comp(m_route,cause,df):
 
     st.write(fig)
 
+def plot_comp_gender(m_route,cause,df):
+    dft = df[(df['Migration route'].isin( m_route)) & (df['Cause of Death'].isin(cause))].sort_values(by='Total Number of Dead and Missing',ascending=False)
+    fig = go.Figure()
+    fig.add_trace(go.Bar(x=dft['Cause of Death Abbreviation'],
+                        y=dft[ 'Number of Males'],
+                        name="Males"))
+    fig.add_trace(go.Bar(x=dft['Cause of Death Abbreviation'],
+                        y=dft['Number of Females'],
+                        name="Females"))
+    fig.add_trace(go.Bar(x=dft['Cause of Death Abbreviation'],
+                        y=dft['Number of Children'],
+                        name="Children"))
+
+
+    
+    fig.update_layout({
+    'plot_bgcolor': 'rgba(0, 0, 0, 0)',
+    'paper_bgcolor': 'rgba(0, 0, 0, 0)',
+    })
+    fig.update_layout(
+        barmode='group',
+        xaxis = dict(
+            tickmode = 'array',
+            tickvals = dft['Cause of Death Abbreviation']
+            ),
+        
+    )
+
+    st.write(fig)
+
 if len(route_input) > 0:
     for i in route_input:
         plot_deaths_season(i,df1)
@@ -120,6 +150,7 @@ if len(route_input) > 0:
         
 if len(route_input) > 0 and len(cause_of_death_input) > 0:
     plot_comp(route_input,cause_of_death_input,df2)
+    plot_comp_gender(route_input,cause_of_death_input,df2)
     
 
 
