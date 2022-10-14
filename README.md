@@ -6,18 +6,18 @@ Part 2: What are news sources saying about migrants on Twitter?
 
 ##  Work to be done:
 - [x] Start a GH repository
-- [ ] Explore Data
-    - [ ] Take a look at the data 
-    - [ ] Some plots
+- [x] Explore Data
+    - [x] Take a look at the data 
+    - [x] Some plots
 - [ ] Pre-process
-    - [ ] Locations: check coordinates
+    - [x] Locations: check coordinates
     - [ ] Seasons: transform dates to season 
-    - [ ] Null values/ missing
+    - [x] Null values/ missing
     - [ ] Outliers 
     - [ ] Data reliability
-- [ ] Visualizations
-    - [ ] Maps with coordinates 
-    - [ ] Group by location: death, numbers, seasons
+- [x] Visualizations
+    - [x] Maps with coordinates 
+    - [x] Group by location: death, numbers, seasons
 - [ ] Interaction: Display values on the coordinates
     - [ ] Hover to show 
     - [ ] Vary by season/location/type 
@@ -26,17 +26,17 @@ Part 2: What are news sources saying about migrants on Twitter?
     - [ ] Make list of words to search for
     - [ ] Identify what we want to narrow down to 
     - [ ] Look at the data of common words, see if we can extract something
-- [ ] Make a website: streamlit.io
-    - [ ] See how to embed the visualization into the website
-    - [ ] Write a column to explain our project 
+- [x] Make a website: streamlit.io
+    - [x] See how to embed the visualization into the website
+    - [ ] Write a column to explain our project -- in progress
 - [ ] Presentation 
 
 
 # How to run the app.py script
 
-Enter the scripts folder and run streamlit
+Enter the src folder and run streamlit
 ```
-cd scripts/
+cd src/
 streamlit run app.py
 ```
 
