@@ -15,14 +15,17 @@ def get_data():
 
 
 df = get_data().rename(columns={"X": "lon", "Y": "lat"})
-migrantdf = df
 
+df['date'] = df[['Incident year','Reported Month']].apply(lambda x: '-'.join(x.values.astype(str)), axis="columns")
+df['date'] = df['date'] + '-1'
+df['date'] = pd.to_datetime(df['date'])
+migrantdf = df
 # Prepare the data
 df1 = df.groupby(['Migration route', 'Season', 'Incident year'])[
     'Total Number of Dead and Missing'].sum().reset_index(name='count')
 df2 = df.groupby(['Migration route', 'Cause of Death', 'Cause of Death Abbreviation'])[
     'Total Number of Dead and Missing'].sum().reset_index(name='Total Number of Dead and Missing')
-df3 = df.groupby(['Migration route', 'Incident year', 'Reported Month'])[['Total Number of Dead and Missing', 'Minimum Estimated Number of Missing',
+df3 = df.groupby(['Migration route', 'date'])[['Total Number of Dead and Missing', 'Minimum Estimated Number of Missing',
                                                                           'Number of Females', 'Number of Males', 'Number of Children', 'Number of Survivors']].sum().reset_index()
 
 # Functions to create the graphs
@@ -44,8 +47,7 @@ def plot_deaths_season(m_route, df):
 # Still in Development, i don't know how to show it
 def plot_deaths_month(m_route, df):
     dft = df[df['Migration route'] == m_route]
-    fig = px.line(dft, x='date', y='Total Number of Dead and Missing',
-                  color='Reported Month', title=f"Deaths per Season in {m_route}")
+    fig = px.line(dft, x='date', y='Total Number of Dead and Missing', title=f"Deaths per month in {m_route}")
     fig.update_layout({
         'plot_bgcolor': 'rgba(0, 0, 0, 0)',
         'paper_bgcolor': 'rgba(0, 0, 0, 0)',
@@ -115,6 +117,7 @@ if len(route_input) > 0:
         # st.map(migrantdf)
         plot_deaths_season(i, df1)
         plot_deaths_cause(i, cause_of_death_input, df2)
+        plot_deaths_month(i,df3)
 
 if len(route_input) > 0 and len(cause_of_death_input) > 0:
     plot_comp(route_input, cause_of_death_input, df2)
