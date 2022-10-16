@@ -25,7 +25,10 @@ df1 = df.groupby(['Migration route', 'Season', 'Incident year'])[
     'Total Number of Dead and Missing'].sum().reset_index(name='count')
 df2 = df.groupby(['Migration route', 'Cause of Death', 'Cause of Death Abbreviation'])[
     'Total Number of Dead and Missing'].sum().reset_index(name='Total Number of Dead and Missing')
-df3 = df.groupby(['Migration route', 'date'])[['Total Number of Dead and Missing', 'Minimum Estimated Number of Missing',
+df_w_cause = df.groupby(['Migration route','Cause of Death','date'])[['Total Number of Dead and Missing', 'Minimum Estimated Number of Missing',
+                                                                          'Number of Females', 'Number of Males', 'Number of Children', 'Number of Survivors']].sum().reset_index()
+
+df_wout_cause = df.groupby(['Migration route','date'])[['Total Number of Dead and Missing', 'Minimum Estimated Number of Missing',
                                                                           'Number of Females', 'Number of Males', 'Number of Children', 'Number of Survivors']].sum().reset_index()
 
 # Functions to create the graphs
@@ -44,17 +47,32 @@ def plot_deaths_season(m_route, df):
     st.write(fig)
 
 
-# Still in Development, i don't know how to show it
-def plot_deaths_month(m_route, df):
-    dft = df[df['Migration route'] == m_route]
-    fig = px.line(dft, x='date', y='Total Number of Dead and Missing', title=f"Deaths per month in {m_route}")
+def plot_deaths_month(m_route,cause, df_wout_cause,df_wcause):
+    if len(cause) > 0:
+        dft = df_wcause[(df_wcause['Migration route'] == m_route) & (df_wcause['Cause of Death'].isin(
+        cause))].groupby(['Migration route','date'])[['Total Number of Dead and Missing', 'Minimum Estimated Number of Missing',
+                                                                          'Number of Females', 'Number of Males', 'Number of Children']].sum().reset_index()
+    else: 
+        dft = df_wout_cause[df_wout_cause['Migration route'] == m_route]
+    fig = px.line(dft, x='date', y=['Total Number of Dead and Missing','Number of Females', 'Number of Males', 'Number of Children'], title=f"Plot of deaths by month along the {m_route} route.")
     fig.update_layout({
         'plot_bgcolor': 'rgba(0, 0, 0, 0)',
         'paper_bgcolor': 'rgba(0, 0, 0, 0)',
     })
-    st.markdown("Plot of deaths by season along the " + m_route + "route.")
     st.write(fig)
 
+def plot_deaths_and_survivors_month(m_route,cause, df_wout_cause,df_wcause):
+    if len(cause) > 0:
+        dft = df_wcause[(df_wcause['Migration route'] == m_route) & (df_wcause['Cause of Death'].isin(
+        cause))].groupby(['Migration route','date'])[['Total Number of Dead and Missing', 'Number of Survivors']].sum().reset_index()
+    else: 
+        dft = df_wout_cause[df_wout_cause['Migration route'] == m_route]
+    fig = px.line(dft, x='date', y=['Total Number of Dead and Missing','Number of Survivors'], title=f"Plot of deaths and survivors by month along the {m_route} route." )
+    fig.update_layout({
+        'plot_bgcolor': 'rgba(0, 0, 0, 0)',
+        'paper_bgcolor': 'rgba(0, 0, 0, 0)',
+    })
+    st.write(fig)
 
 def plot_deaths_cause(m_route, causes, df):
     dft = df[df['Migration route'] == m_route].sort_values(
@@ -101,9 +119,9 @@ st.markdown("In this page we welcome you to explore the data one region at a tim
 st.sidebar.write("Data Filters")
 route_input = [st.sidebar.selectbox(
     'Migration Route', df['Migration route'].unique().tolist())]
-if len(route_input) > 0:
-    migrantdf = df[df['Migration route'].isin(route_input)]
-    show_route_death = True
+#if len(route_input) > 0:
+#    migrantdf = df[df['Migration route'].isin(route_input)]
+#    show_route_death = True
 
 cause_of_death_input = st.sidebar.multiselect(
     'Cause of Death', df['Cause of Death'].unique().tolist())
@@ -112,12 +130,12 @@ if len(cause_of_death_input) > 0:
         cause_of_death_input)]
 
 
-if len(route_input) > 0:
-    for i in route_input:
-        # st.map(migrantdf)
-        plot_deaths_season(i, df1)
-        plot_deaths_cause(i, cause_of_death_input, df2)
-        plot_deaths_month(i,df3)
+if route_input:
+    route_s= route_input[0]
+    plot_deaths_month(route_s,cause_of_death_input,df_wout_cause,df_w_cause)
+    plot_deaths_and_survivors_month(route_s,cause_of_death_input,df_wout_cause,df_w_cause)
+    plot_deaths_season(route_s, df1)
+    plot_deaths_cause(route_s,cause_of_death_input, df2)
 
 if len(route_input) > 0 and len(cause_of_death_input) > 0:
     plot_comp(route_input, cause_of_death_input, df2)
