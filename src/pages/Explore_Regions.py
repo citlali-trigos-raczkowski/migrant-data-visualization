@@ -119,9 +119,6 @@ st.markdown("In this page we welcome you to explore the data one region at a tim
 st.sidebar.write("Data Filters")
 route_input = [st.sidebar.selectbox(
     'Migration Route', df['Migration route'].unique().tolist())]
-#if len(route_input) > 0:
-#    migrantdf = df[df['Migration route'].isin(route_input)]
-#    show_route_death = True
 
 cause_of_death_input = st.sidebar.multiselect(
     'Cause of Death', df['Cause of Death'].unique().tolist())
@@ -139,3 +136,26 @@ if route_input:
 
 if len(route_input) > 0 and len(cause_of_death_input) > 0:
     plot_comp(route_input, cause_of_death_input, df2)
+
+
+
+if route_input:
+
+    mdf = df[df['Migration route'] == route_s]
+    migrantdf = mdf.groupby(['Migration route'])[
+    'Cause of Death'].agg(pd.Series.mode).reset_index()
+    st.metric(f'Most common cause of death',migrantdf['Cause of Death'].iloc[0])
+    col1,col2= st.columns(2)
+    route_s= route_input[0]
+    worst_month = mdf.groupby(['Migration route','date'])['Total Number of Dead and Missing'].sum().reset_index().sort_values(by='Total Number of Dead and Missing',ascending=False)
+    df_d_s = mdf.groupby(['Migration route'])[['Total Number of Dead and Missing','Number of Survivors']].sum().reset_index()
+    
+    with col1:
+        st.metric(f'Total number of Dead and Missing',df_d_s['Total Number of Dead and Missing'].iloc[0])
+    with col2:
+        st.metric(f'Number of Survivors',df_d_s['Number of Survivors'].iloc[0])
+    col3,col4 = st.columns(2)
+    with col3:
+        st.metric(f'Deadliest event date',worst_month['date'].dt.strftime('%Y-%m').iloc[0])
+    with col4:
+        st.metric(f'Deadliest event number of deaths',worst_month['Total Number of Dead and Missing'].iloc[0])
