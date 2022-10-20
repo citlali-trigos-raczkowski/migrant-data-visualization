@@ -51,6 +51,11 @@ if len(cause_of_death_input) > 0:
     migrantdf = migrantdf[migrantdf['Cause of Death'].isin(
         cause_of_death_input)]
 
+year_input = st.sidebar.multiselect('Year of the Incident',
+                    df['Incident year'].unique().tolist())
+if len(year_input) > 0:
+    migrantdf = migrantdf[migrantdf['Incident year'].isin(
+        year_input)]
 
 # 1.0 Introduction in Main Body  *      *       *      *      *       *      *      *       *      *      *       *
 # 1.1 title and subtitle
@@ -129,15 +134,14 @@ st.plotly_chart(plot)
 #Total Number of deaths
 #Total Number of Survivors
 
-df_cause_of_death = df.groupby(['Migration route'])[
+df_cause_of_death = migrantdf.groupby(['Migration route'])[
     'Cause of Death','Cause of Death Abbreviation'].agg(pd.Series.mode).reset_index()
-df_d_s = df.groupby(['Migration route'])[['Total Number of Dead and Missing','Number of Survivors']].sum().reset_index()
+df_d_s = migrantdf.groupby(['Migration route'])[['Total Number of Dead and Missing','Number of Survivors']].sum().reset_index()
 
 for route in route_input:
     st.subheader(f'Statistics for the route {route}')
-    col1,col2,col3 = st.columns(3)
-    with col1:
-        st.metric(f'Most common cause of death',df_cause_of_death[df_cause_of_death['Migration route'] == route]['Cause of Death Abbreviation'].iloc[0])
+    st.metric(f'Most common cause of death',df_cause_of_death[df_cause_of_death['Migration route'] == route]['Cause of Death Abbreviation'].iloc[0])
+    col2,col3 = st.columns(2)
     with col2:
         st.metric(f'Total number of Dead and Missing',df_d_s[df_d_s['Migration route'] == route]['Total Number of Dead and Missing'].iloc[0])
     with col3:
