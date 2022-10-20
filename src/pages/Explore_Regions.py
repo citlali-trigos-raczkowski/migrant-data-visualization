@@ -58,6 +58,8 @@ def plot_deaths_month(m_route,cause, df_wout_cause,df_wcause):
     fig.update_layout({
         'plot_bgcolor': 'rgba(0, 0, 0, 0)',
         'paper_bgcolor': 'rgba(0, 0, 0, 0)',
+        'xaxis_title':"Date", 
+        'yaxis_title':"Number of Deaths",
     })
     st.write(fig)
 
@@ -71,6 +73,8 @@ def plot_deaths_and_survivors_month(m_route,cause, df_wout_cause,df_wcause):
     fig.update_layout({
         'plot_bgcolor': 'rgba(0, 0, 0, 0)',
         'paper_bgcolor': 'rgba(0, 0, 0, 0)',
+        'xaxis_title':"Date", 
+        'yaxis_title':"Number of Deaths",
     })
     st.write(fig)
 
@@ -115,7 +119,8 @@ def plot_comp(m_route, cause, df):
 
 #  Markdown for the page
 st.header("Explore One Region at a Time")
-st.markdown("In this page we welcome you to explore the data one region at a time, using the filters in the left side menu to filter.")
+st.markdown("In this page we welcome you to explore the data one region at a time, using the filters in the left side menu to filter. Try using the filters and check how the data visualization changes." +
+"Migrations that cross borders and routes include entire families with children. Those routes are so dangerous, and even more for infants." + "On the other hand, others manage to survive the journey, but the fact that they do does not mean that it was without great difficulty and that many others did not.")
 st.sidebar.write("Data Filters")
 route_input = [st.sidebar.selectbox(
     'Migration Route', df['Migration route'].unique().tolist())]
