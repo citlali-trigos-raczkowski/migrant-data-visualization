@@ -144,7 +144,14 @@ if route_input:
     mdf = df[df['Migration route'] == route_s]
     migrantdf = mdf.groupby(['Migration route'])[
     'Cause of Death'].agg(pd.Series.mode).reset_index()
-    st.metric(f'Most common cause of death',migrantdf['Cause of Death'].iloc[0])
+
+    cause1 = migrantdf['Cause of Death'].iloc[0]
+    st.metric(f'Most common cause of death',cause1)
+    if cause1 =='Mixed or unknown':
+        cause2= migrantdf['Cause of Death'].iloc[1]
+        st.metric(f'Second most common cause of death',cause1)
+
+    
     col1,col2= st.columns(2)
     route_s= route_input[0]
     worst_month = mdf.groupby(['Migration route','date'])['Total Number of Dead and Missing'].sum().reset_index().sort_values(by='Total Number of Dead and Missing',ascending=False)

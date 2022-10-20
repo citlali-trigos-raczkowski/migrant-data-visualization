@@ -65,14 +65,15 @@ st.markdown("We welcome you to explore the below visualization by zooming into t
 #custom_marker.add_to(map_w)
 #st_map = st_folium(map_w)
 # 1.2 map
-#st.map(migrantdf)
+
+#migrantdf['text'] = migrantdf['Cause of Death Abbreviation'] + migrantdf['Total Number of Dead and Missing'].to_string()
 
 fig = go.Figure(data=go.Scattergeo(
         lon = migrantdf['lon'],
         lat = migrantdf['lat'],
         text = migrantdf['Cause of Death Abbreviation'],
-        #name=migrantdf['Migration route'],
-        hoverinfo=['name','text',"lon+lat"],
+        #hoverlabel=migrantdf['Migration route'],
+        hoverinfo=['text'],
         mode = 'markers',
         marker_color = 'rgb(210,30,0)',
         marker=dict(
@@ -97,14 +98,39 @@ fig.update_layout(
     )
     
 
-st.plotly_chart(fig)
+#st.plotly_chart(fig)
+
+plot = px.scatter_geo(migrantdf, lat='lat',lon='lon',
+                    hover_name='Migration route',
+                    hover_data=['Cause of Death Abbreviation','Total Number of Dead and Missing','Incident year'],
+                    color_discrete_sequence=['red']
+                    )
+
+plot.update_layout(
+    title = 'Locations of the Reports',
+    autosize=False,
+    #width=750,
+    #height=400,
+    geo = dict(
+        scope='world',
+        showcountries = True,
+        showocean = True,
+        landcolor = "#f2f2f0",
+        oceancolor = "#cad2d3",
+        showcoastlines = False,
+    ),
+    margin={"r":0,"t":0,"l":0,"b":0},
+    )
+
+
+st.plotly_chart(plot)
 # 1.3 Route info
 #Most common cause of death
 #Total Number of deaths
 #Total Number of Survivors
 
 df_cause_of_death = df.groupby(['Migration route'])[
-    'Cause of Death'].agg(pd.Series.mode).reset_index()
+    'Cause of Death','Cause of Death Abbreviation'].agg(pd.Series.mode).reset_index()
 df_d_s = df.groupby(['Migration route'])[['Total Number of Dead and Missing','Number of Survivors']].sum().reset_index()
 
 for route in route_input:
