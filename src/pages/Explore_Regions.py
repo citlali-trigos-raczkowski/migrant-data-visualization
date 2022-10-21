@@ -130,7 +130,10 @@ st.header("Explore One Region at a Time")
 st.markdown("In this page we welcome you to explore the data one region at a time, using the filters in the left side menu. Try selecting a new region to check how the data visualization changes. " +
             "Migrations that cross borders and routes often include families with children. While extremely dangerous, they are even moreso for infants." + " For those that do survive the journey, it is not without great difficulty and loss.")
 
-# TODO: include list of most deadly regions 
+st.markdown("The following is a table of all included migration routes paired with the total number of recorded dead and missing people from that route, since 2014.")
+dff = df.groupby(['Migration route'])[
+    ['Total Number of Dead and Missing']].sum().sort_values('Total Number of Dead and Missing', ascending=False).reset_index()
+st.dataframe(dff)
 
 st.sidebar.write("Data Filters")
 
