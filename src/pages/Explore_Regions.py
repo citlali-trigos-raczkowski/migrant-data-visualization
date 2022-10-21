@@ -161,16 +161,25 @@ if route_input:
         df_d_s['Number of Children'].iloc[0])
 
     # introduction
-    st.markdown("There are a total of  " + total_dead_missing +
-                " recorded deaths in the data since 2014 for the " + route_input[0] +
-                " migration route. This includes " + total_women_dead_missing +
+    st.markdown("For the " + route_input[0] +
+                " migration route, there are a total of  " + total_dead_missing +
+                " recorded deaths in the data since 2014. This includes " + total_women_dead_missing +
                 " women, " + total_men_dead_missing + " men, and " + total_children_dead_missing + " children.")
 
-    # TODO: origination data
-    st.markdown("Most of the migrants taking this route originate from ..")
-
     # map of the selection region
+    # TODO: there's some data that shows up that shouldn't be here..
     st.map(mdf)
+
+    # Country of origin
+    mdf['Number of People'] = mdf.loc[:, [
+        'Total Number of Dead and Missing', 'Number of Survivors']].sum(axis=1)
+    total_migrants = mdf['Number of People'].sum()
+    mdf['Percentage of People from Country of Origin'] = mdf['Number of People']/total_migrants
+    dforigin = mdf.groupby(['Country of Origin'])[['Number of People', 'Percentage of People from Country of Origin']].sum(
+    ).sort_values('Number of People', ascending=False).reset_index()
+
+    st.markdown("The following table lists the known countries of origin for migrants traveling along this route. For each country, we see the total number of people from the country and the percentage of migrants from the country.")
+    st.dataframe(dforigin)
 
     #   column statistics
     st.subheader("View the Statistics")
