@@ -166,10 +166,6 @@ if route_input:
                 " recorded deaths in the data since 2014. This includes " + total_women_dead_missing +
                 " women, " + total_men_dead_missing + " men, and " + total_children_dead_missing + " children.")
 
-    # map of the selection region
-    # TODO: there's some data that shows up that shouldn't be here..
-    st.map(mdf)
-
     # Country of origin
     mdf['Number of People'] = mdf.loc[:, [
         'Total Number of Dead and Missing', 'Number of Survivors']].sum(axis=1)
