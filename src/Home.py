@@ -104,11 +104,18 @@ fig.update_layout(
     margin={"r": 0, "t": 0, "l": 0, "b": 0},
 )
 
-plot = px.scatter_geo(migrantdf, lat='lat', lon='lon',
-                      hover_name='Migration route',
-                      hover_data={'Cause of Death Abbreviation': True,
-                                  'Total Number of Dead and Missing': True,
-                                  'Incident year': True,
+# changing column names for the hovering capability
+plotdf = migrantdf[['lat', 'lon']]
+plotdf['Migration Route'] = migrantdf['Migration route']
+plotdf['Cause of Death'] = migrantdf['Cause of Death Abbreviation']
+plotdf['Year'] = migrantdf['Incident year']
+plotdf['People Dead/Missing'] = migrantdf['Total Number of Dead and Missing']
+
+plot = px.scatter_geo(plotdf, lat='lat', lon='lon',
+                      hover_name='Migration Route',
+                      hover_data={'Cause of Death': True,
+                                  'People Dead/Missing': True,
+                                  'Year': True,
                                   'lon': False,
                                   'lat': False
                                   },
@@ -132,6 +139,8 @@ plot.update_layout(
 )
 
 st.header("Explore the World Map")
+st.markdown("When you hover over the graph with your mouse, you'll see additional data appear. Each dot on the graph marks a single incident, and the tooltip for that dot gives data on: (1) Cause of Death, (2) How many total people died or went missing for the incident, and (3) Which year the incident occured in.")
+st.markdown("The map can be made full-screen. When you hover over the map, a menu should appear above it. The right-most arrows, when selected, will make the map full screen.")
 st.plotly_chart(plot)
 # 1.3 Route info
 # Most common cause of death
@@ -170,7 +179,7 @@ st.markdown(
 st.markdown(" There have been over " + total_no_deaths + " recorded deaths since 2014. The **most deadly region is the Mediterranean**, where at least " + total_med_deaths + " deaths have been recorded. The most common **cause of death** across the world is drowning, with at least " +
             total_drown_deaths + " recorded deaths.")
 st.markdown("All of these estimates are undercounts, as the project does not include counts of deaths of disappearances of migrants who have been established in a home, such as a refugee camp, or the deaths of persons who die within their country of origin while.")
-st.markdown('From the Missing Migrant Project:\n\n "Missing Migrants Project data include the deaths of migrants who die in transportation accidents, shipwrecks, violent attacks, or due to medical complications during their journeys. It also includes the number of corpses found at border crossings that are categorized as the bodies of migrants, on the basis of belongings and/or the characteristics of the death. For instance, a death of an unidentified person might be included if the decedent is found without any identifying documentation in an area known to be on a migration route.  Deaths during migration may also be identified based on the cause of death, especially if is related to trafficking, smuggling, or means of travel such as on top of a train, in the back of a cargo truck, as a stowaway on a plane, in unseaworthy boats, or crossing a border fence.  While the location and cause of death can provide strong evidence that an unidentified decedent should be included in Missing Migrants Project data, this should always be evaluated in conjunction with migration history and trends."')
+st.markdown('From the Missing Migrant Project:\n\n *"Missing Migrants Project data include the deaths of migrants who die in transportation accidents, shipwrecks, violent attacks, or due to medical complications during their journeys. It also includes the number of corpses found at border crossings that are categorized as the bodies of migrants, on the basis of belongings and/or the characteristics of the death. For instance, a death of an unidentified person might be included if the decedent is found without any identifying documentation in an area known to be on a migration route.  Deaths during migration may also be identified based on the cause of death, especially if is related to trafficking, smuggling, or means of travel such as on top of a train, in the back of a cargo truck, as a stowaway on a plane, in unseaworthy boats, or crossing a border fence.  While the location and cause of death can provide strong evidence that an unidentified decedent should be included in Missing Migrants Project data, this should always be evaluated in conjunction with migration history and trends."*')
 st.markdown(
     'Explore the tabular data yourself using the filters in the left side menu.')
 st.dataframe(migrantdf)
