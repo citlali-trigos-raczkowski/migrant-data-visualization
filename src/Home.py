@@ -56,6 +56,7 @@ if len(cause_of_death_input) > 0:
 year_input = st.sidebar.multiselect('Year',
                                     df['Incident year'].unique().tolist())
 if len(year_input) > 0:
+    year_input.sort()
     migrantdf = migrantdf[migrantdf['Incident year'].isin(
         year_input)]
 
@@ -66,15 +67,43 @@ st.markdown("Our team is working to understand and inform others about deaths of
 st.markdown("This migration data is more than just numbers. This is information about real people that left their home countries for various reasons and ultimately perished during their journey. This is data that requires respect and care in order to be presented faithfully. In this project, we aim to bring awareness to the challenges and risks that migrants and their loved ones face everyday. Perhaps you are familiar with several of the migration routes displayed here. There are likely other dangerous routes that you haven't heard of. Many of us can recall certain stories that made it to the news about the deaths of migrants, but as we can see in the data, this is an ongoing, everyday risk that affects many individuals, families, communitites, and countries around the world.")
 st.markdown("We welcome you to explore the below visualization by zooming into the map directly or by using the filters in the left side menu.")
 
-#map_w = folium.Map()
-#loca = (migrantdf.iloc[0]['lon'],migrantdf.iloc[0]['lat'])
-#custom_marker = folium.Marker(location=loca)
-# custom_marker.add_to(map_w)
-#st_map = st_folium(map_w)
-# 1.2 map
+# 1.2 Global Statistics
+# st.markdown(str(year_input), str(len(year_input)))
+if len(year_input) == 1:
+    year_text = " in " + str(year_input[0])
+elif len(year_input) == 2:
+    year_text = " in " + str(year_input[0]) + ' and ' + str(year_input[1])
+elif len(year_input) > 2:
+    year_text = " in " + str(year_input[0])
+    for year in year_input[1:-1]:
+        year_text += ', ' + str(year)
+    year_text += ', and ' + str(year_input[-1])
+else:
+    year_text = ''
 
-#migrantdf['text'] = migrantdf['Cause of Death Abbreviation'] + migrantdf['Total Number of Dead and Missing'].to_string()
+if len(year_input) > 0:
+    statsdf = df[df['Incident year'].isin(
+        year_input)]
+else:
+    statsdf = df
+df_cause_of_death = statsdf.groupby('Cause of Death Abbreviation')['Cause of Death Abbreviation', 'Total Number of Dead and Missing'].sum(
+).sort_values('Total Number of Dead and Missing', ascending=False).reset_index()
+df_cause_of_death['Total Number of Dead and Missing'] = df_cause_of_death['Total Number of Dead and Missing'].apply(
+    lambda x: prettify(x))
 
+st.subheader(f'Global Statistics' + str(year_text))
+st.markdown(f'Most common causes of death')
+st.dataframe(df_cause_of_death, height=200)
+
+col2, col3 = st.columns(2)
+with col2:
+    st.metric(f'Total number of Recorded Dead and Missing',
+              prettify(statsdf['Total Number of Dead and Missing'].sum()))
+with col3:
+    st.metric(f'Total Number of Recorded Survivors',
+              prettify(statsdf['Number of Survivors'].sum()))
+
+# 1.3 Display the map
 fig = go.Figure(data=go.Scattergeo(
     lon=migrantdf['lon'],
     lat=migrantdf['lat'],
@@ -142,32 +171,9 @@ st.header("Explore the World Map")
 st.markdown("When you hover over the graph with your mouse, you'll see additional data appear. Each dot on the graph marks a single incident, and the tooltip for that dot gives data on: (1) Cause of Death, (2) How many total people died or went missing for the incident, and (3) Which year the incident occured in.")
 st.markdown("The map can be made full-screen. When you hover over the map, a menu should appear above it. The right-most arrows, when selected, will make the map full screen.")
 st.plotly_chart(plot)
-# 1.3 Route info
-# Most common cause of death
-# Total Number of deaths
-# Total Number of Survivors
-
-df_cause_of_death = migrantdf.groupby(['Migration route'])[
-    'Cause of Death', 'Cause of Death Abbreviation'].agg(pd.Series.mode).reset_index()
-df_d_s = migrantdf.groupby(['Migration route'])[
-    ['Total Number of Dead and Missing', 'Number of Survivors']].sum().reset_index()
-
-for route in route_input:
-    st.subheader(f'Statistics for the route {route}')
-    st.metric(f'Most common cause of death',
-              df_cause_of_death[df_cause_of_death['Migration route'] == route]['Cause of Death Abbreviation'].iloc[0])
-    col2, col3 = st.columns(2)
-    with col2:
-        st.metric(f'Total number of Dead and Missing',
-                  df_d_s[df_d_s['Migration route'] == route]['Total Number of Dead and Missing'].iloc[0])
-    with col3:
-        st.metric(f'Number of Survivors',
-                  df_d_s[df_d_s['Migration route'] == route]['Number of Survivors'].iloc[0])
-
 
 #  1.4 Explore tabular data
 st.header("Explore the Tabular Data")
-# TODO: get these from the data (currently pulling directly from https://missingmigrants.iom.int/data)
 total_no_deaths = prettify(df['Total Number of Dead and Missing'].sum())
 total_med_deaths = prettify(df[df['Migration route'].isin(
     ['Central Mediterranean', 'Western Mediterranean', 'Eastern Mediterranean'])]['Total Number of Dead and Missing'].sum())
