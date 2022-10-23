@@ -2,13 +2,11 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-#from Home import get_df
 
 def get_data():
     return pd.read_csv("../data/data.csv")
 
 tweet_df = get_data()
-#tweet_df = get_df
 
 def plot_deaths_month(route, df):
     route_df = df[df['route'] == route]
@@ -37,12 +35,12 @@ df1 = tweet_df.groupby(['route','date'])[['number dead', 'number missing']].sum(
 # Page: Twitter Integration
 st.header("Twitter API Integration")
 
-st.markdown('We used the Twitter API to download tweets, from specific accounts that often report on news relating to migrants and search \
-and rescue operations, as well as tweets matching a search with the keywords "migrant missing dead". Downloading tweets for specified users \
+st.markdown('We used the Twitter API to download tweets from specific accounts that often report on news relating to migrants and search \
+and rescue operations, as well as tweets matching a search with the keywords "migrant missing dead". Downloading Tweets from specified users \
 necessitated the Elevated Access to the API, and our request was approved. The twitter "search" function of the API was able to give \
-results for the last 7 days. A thousand tweets were downloaded from the users @USCGSoutheast, @SARwatchMED and @InfoMigrants, all of which report on incidents relating to migrants.')
-st.markdown('Nearly all of the data was from the mediterranian, since according to data from the Missing Migrants Project, mediterranian routes are the ones with most incidents, and possibly due to the fact that one the sources was @SARwatchMED, which \
-exclusively reports on the search-and-rescue operations on the Mediterranian.')
+results for the last 7 days. A thousand tweets were downloaded from the users @USCGSoutheast, @SARwatchMED and @InfoMigrants, all of which report on incidents relating to migrants. From these Tweets we filtered the ones relating to incidents by choosing the ones that containing keywords such as migrant, missing, etc. From reading these Tweets and writing down data, we were able to obtain a dataset of recent incidents with the information of number of people dead/missing, location/migratory route, and the date when it was reported.')
+st.markdown('Nearly all of the data was from the Mediterranean, since according to data from the Missing Migrants Project, mediterranian routes are the ones with most incidents, and possibly due to the fact that one the sources was @SARwatchMED, which \
+exclusively reports on the search-and-rescue operations on the Mediterranean.')
 st.markdown('From the left menu, you can choose the route you want to see the data for. The graph below shows the number of deaths and missing. ')
 
 st.sidebar.write("Data Filters")
