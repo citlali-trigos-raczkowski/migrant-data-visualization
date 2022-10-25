@@ -11,16 +11,17 @@ Part 2: What are news sources saying about migrants on Twitter?
     - [x] Some plots
 - [ ] Pre-process
     - [x] Locations: check coordinates
-    - [ ] Seasons: transform dates to season 
+    - [x] Seasons: transform dates to season 
     - [x] Null values/ missing
-    - [ ] Outliers 
+    - [x] Clustering for Data Points
+    - [x] Outliers 
     - [ ] Data reliability
 - [x] Visualizations
     - [x] Maps with coordinates 
     - [x] Group by location: death, numbers, seasons
-- [ ] Interaction: Display values on the coordinates
-    - [ ] Hover to show 
-    - [ ] Vary by season/location/type 
+- [x] Interaction: Display values on the coordinates
+    - [x] Hover to show 
+    - [x] Vary by season/location/type 
 - [ ] ML idea: write an algorithm to search for statistics on migrants from reputable sources
     - [ ] download twitter api
     - [ ] Make list of words to search for
