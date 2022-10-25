@@ -1,32 +1,20 @@
-route,location,number dead,number missing,date
-Central Mediterranean,"Mahdia coast, Tunisia",15,0,2022-10-14
-Central Mediterranean,"Trapani, Sicily",3,0,2022-10-13
-Central Mediterranean,"Zarzis, Tunisia",11,0,2022-09-21
-Central Mediterranean,"Sbaratha, Libya",15,0,2022-10-07
-Eastern Mediterranean,"Kythira, Greece",23,0,2022-10-05
-Eastern Mediterranean,Lesbos,16,0,2022-10-06
-Western Mediterranean,Spain / Canary Islands,4,0,2022-10-06
-Eastern Mediterranean,Syria,97,0,2022-09-26
-Eastern Mediterranean,"Aegean Sea, Turkey",6,0,2022-09-15
-Eastern Mediterranean,"Turkey, coast of Izmir",6,5,2022-09-15
-Western Mediterranean,Morocco,1,0,2022-09-13
-Central Mediterranean,"Pozzallo, Sicily",6,0,2022-09-10
-Central Mediterranean,Tunisia,8,15,2022-09-09
-Eastern Mediterranean,"Crete, Greece",1,0,2022-09-08
-Eastern Mediterranean,Lebanon,30,0,2022-04-24
-Eastern Mediterranean,Turkey,1,0,2022-08-26
-Western Mediterranean,"Canary Islands, Fuerteventura",3,0,2022-08-16
-Central Mediterranan,"Libya, Sudan border",15,2,2022-08-15
-Western Mediterranean,Algerian coast,6,0,2022-08-09
-Western Mediterranean,"Morocco, Akhfennir",8,0,2022-07-26
-Sahara Desert crossing,"Niger, Libyan border",10,0,2022-07-01
-Central Mediterranean,Calabrian coast,5,0,2022-07-25
-Sahara Desert crossing,"Libya, Chad border",20,0,2022-06-30
-Central Mediterranean,Central Mediterranean,0,30,2022-06-27
-US-Mexico border crossing,"US, San Antonio",46,0,2022-06-28
-Central Mediterranean,Morocco (to Mellilla),23,0,2022-06-28
-Eastern Mediterranean,"Lesbos, Greece",2,0,2022-06-27
-Central Mediterranean,"Tunisia, Coast of Sfax",16,0,2022-06-21
-Eastern Mediterranean,"Greece, Aegean sea",0,8,2022-06-20
-Western Mediterranean,Spain coast,4,0,2022-06-09
-Caribbean to US,Ilsa Morada,0,1,2022-09-02
+route,location,number dead,number missing,date,lat,lon
+Central Mediterranean,"Mahdia coast, Tunisia",15,0,2022-10-14,35.513919,11.090457
+Central Mediterranean,"Trapani, Sicily",3,0,2022-10-13,38.034506,12.476485
+Central Mediterranean,"Zarzis, Tunisia",11,0,2022-09-21,33.509019,11.134580
+Central Mediterranean,"Sbaratha, Libya",15,0,2022-10-07,32.874355,12.461700
+Eastern Mediterranean,"Kythira, Greece",23,0,2022-10-05,36.245586,23.161616
+Eastern Mediterranean,Lesbos,16,0,2022-10-06,39.239494,26.517556
+Western Mediterranean,Spain / Canary Islands,4,0,2022-10-06,28.652163,-15.661686
+Eastern Mediterranean,"Syria, near Arida Border",97,0,2022-09-26,34.633319,35.973976
+Eastern Mediterranean,"Aegean Sea, Turkey",6,0,2022-09-15,38.083909,25.454807
+Eastern Mediterranean,"Turkey, coast of Izmir",6,5,2022-09-15,38.437494,27.070782
+Western Mediterranean,"Morocco, Tarfaya",1,0,2022-09-13,27.959682,-12.933955
+Central Mediterranean,"Pozzallo, Sicily",6,0,2022-09-10,36.723665,14.854199
+Central Mediterranean,"Tunisia, Chebba",8,15,2022-09-09,35.238334,11.184468
+Eastern Mediterranean,"Crete, Greece",1,0,2022-09-08,34.705937,24.399454
+Iran to Türkiye,"Turkey, Van",1,0,2022-08-26,38.502345,43.235299
+Western Mediterranean,"Canary Islands, Fuerteventura",3,0,2022-08-16,28.124122,-13.638271
+Sahara Desert crossing,"Libya, North Darfur, Libya-Sudan border,",15,2,2022-08-15,20.193175,24.422461
+Western Mediterranean,"Algerian coast, Baïnem",6,0,2022-08-09,36.824771,2.969724
+Caribbean to US,Islamorada,0,1,2022-09-02,24.903589,-80.608638
