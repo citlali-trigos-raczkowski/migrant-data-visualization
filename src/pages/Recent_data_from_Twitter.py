@@ -5,7 +5,7 @@ import pandas as pd
 import plotly.express as px
 
 def get_data():
-    return pd.read_csv("../data/data.csv")
+    return pd.read_csv("data/data.csv")
 
 tweet_df = get_data()
 
