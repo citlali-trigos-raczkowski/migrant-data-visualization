@@ -12,7 +12,7 @@ from millify import prettify
 
 @st.cache
 def get_data():
-    return pd.read_csv("Missing_Migrants_Global_Figures_filtered.csv")
+    return pd.read_csv("data/Missing_Migrants_Global_Figures_filtered.csv")
 
 
 df = get_data().rename(columns={"X": "lon", "Y": "lat"})
@@ -107,7 +107,8 @@ def plot_deaths_cause(m_route, causes, df):
         'paper_bgcolor': 'rgba(0, 0, 0, 0)',
         'xaxis_title': "",
     })
-
+    st.markdown(
+        "Selecting a cause of death from the left side menu will modify the below plot(s).")
     st.write(fig)
 
 
@@ -128,9 +129,10 @@ def plot_comp(m_route, cause, df):
 #  Markdown for the page
 st.header("Explore One Region at a Time")
 st.markdown("In this page we welcome you to explore the data one region at a time, using the filters in the left side menu. Try selecting a new region to check how the data visualization changes. " +
-            "Migrations that cross borders and routes often include families with children. While extremely dangerous, they are even moreso for infants." + " For those that do survive the journey, it is not without great difficulty and loss.")
+            "Migrations often include families with children. While these journeys are dangerous, they are even moreso for children." + " For those that do survive the journey, it is often not without great difficulty and loss.")
 
 st.markdown("The following is a table of all included migration routes paired with the total number of recorded dead and missing people from that route, since 2014.")
+st.markdown("The data from the Missing Migrants Project includes instances in Asia that are not assigned any migration route. We have compiled these and assigned them the new value: `Routes in Asia`. In time we hope to understand these events in more detail.")
 dff = df.groupby(['Migration route'])[
     ['Total Number of Dead and Missing']].sum().sort_values('Total Number of Dead and Missing', ascending=False).reset_index()
 st.dataframe(dff)
@@ -186,7 +188,7 @@ if route_input:
     st.metric(f'Second most common cause of death', cause2)
 
     with col1:
-        st.metric(f'Total number of Dead and Missing since 2014',
+        st.metric(f'Total number of Recorded Dead and Missing since 2014',
                   total_dead_missing)
     with col2:
         st.metric(f'Number of Recorded Survivors',
