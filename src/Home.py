@@ -15,7 +15,7 @@ from millify import prettify
 #    'Coordinates', 'UNSD Geographical Grouping', 'X', 'Y']
 
 # Import the data
-data_url = "../Missing_Migrants_Global_Figures_filtered.csv"
+data_url = "Missing_Migrants_Global_Figures_filtered.csv"
 
 # Prepare the Data
 

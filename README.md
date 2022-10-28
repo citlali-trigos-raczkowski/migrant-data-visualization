@@ -37,8 +37,7 @@ Part 2: What are news sources saying about migrants on Twitter?
 
 Enter the src folder and run streamlit
 ```
-cd src/
-streamlit run app.py
+streamlit run src/Home.py
 ```
 
 If the command streamlit is not found, then you're going to need to first [set up streamlit](https://docs.streamlit.io/library/get-started/installation). I'm using a conda virtual environment

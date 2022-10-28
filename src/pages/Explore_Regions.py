@@ -12,7 +12,7 @@ from millify import prettify
 
 @st.cache
 def get_data():
-    return pd.read_csv("../Missing_Migrants_Global_Figures_filtered.csv")
+    return pd.read_csv("Missing_Migrants_Global_Figures_filtered.csv")
 
 
 df = get_data().rename(columns={"X": "lon", "Y": "lat"})
