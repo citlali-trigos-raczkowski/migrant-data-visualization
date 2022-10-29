@@ -1,0 +1,27 @@
+## Work to be done:
+
+- [x] Start a GH repository
+- [x] Explore Data
+  - [x] Take a look at the data
+  - [x] Some plots
+- [x] Pre-process
+  - [x] Locations: check coordinates
+  - [x] Seasons: transform dates to season
+  - [x] Null values/ missing
+  - [x] Clustering for Data Points
+  - [x] Outliers
+  - [ ] Data reliability
+- [x] Visualizations
+  - [x] Maps with coordinates
+  - [x] Group by location: death, numbers, seasons
+- [x] Interaction: Display values on the coordinates
+  - [x] Hover to show
+  - [x] Vary by season/location/type
+- [x] ML idea: write an algorithm to search for statistics on migrants from reputable sources
+  - [x] download twitter api & get access
+  - [x] Make list of words to search for
+  - [x] Identify what we want to narrow down to
+  - [x] Look at the data of common words, see if we can extract something
+- [x] Make a website: streamlit.io
+  - [x] See how to embed the visualization into the website
+  - [x] Deploy the application!

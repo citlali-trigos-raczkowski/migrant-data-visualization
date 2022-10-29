@@ -1,41 +1,32 @@
-# migrant-data-visualization
+# Visualizing Deaths of Migrants at Borders
 
-## Parts 
-Part 1: Visualize deaths of migrants in the Americas
-Part 2: What are news sources saying about migrants on Twitter?
+Check out the [deployed application here.](https://citlali-trigos-raczkowski-migrant-data-visualiza-srchome-b0llv8.streamlitapp.com/)
 
-##  Work to be done:
-- [x] Start a GH repository
-- [x] Explore Data
-    - [x] Take a look at the data 
-    - [x] Some plots
-- [ ] Pre-process
-    - [x] Locations: check coordinates
-    - [x] Seasons: transform dates to season 
-    - [x] Null values/ missing
-    - [x] Clustering for Data Points
-    - [x] Outliers 
-    - [ ] Data reliability
-- [x] Visualizations
-    - [x] Maps with coordinates 
-    - [x] Group by location: death, numbers, seasons
-- [x] Interaction: Display values on the coordinates
-    - [x] Hover to show 
-    - [x] Vary by season/location/type 
-- [ ] ML idea: write an algorithm to search for statistics on migrants from reputable sources
-    - [ ] download twitter api
-    - [ ] Make list of words to search for
-    - [ ] Identify what we want to narrow down to 
-    - [ ] Look at the data of common words, see if we can extract something
-- [x] Make a website: streamlit.io
-    - [x] See how to embed the visualization into the website
-    - [ ] Write a column to explain our project -- in progress
-- [ ] Presentation 
+## Introduction
 
+This project was created to try to understand and inform others about the deaths of migrants, focused at borders. It relies on the [Missing Migrants Project](https://missingmigrants.iom.int/) dataset, which includes data from 2014 to 2022. This data includes incidents across the world, each entry representing the death of 1 or more persons, with details about the location, cause of death, time, and more, if it can be identified.
 
-# How to run the app.py script
+In this project, the data is used to create an interactive data visualization map of the world, allowing readers to see how migrant deaths vary by location, cause of death, gender, and season. To highlight that the occurrence of these tragedies is an ongoing phenomenon, we wanted to add newer data from the most recent reports to our dataset. We achieved this by pulling Tweets from different sources of news reports on Twitter using the Twitter API. This part can be found from the Twitter page of the application.
 
-Enter the src folder and run streamlit
+## Streamlit Application
+
+This application is built and deployed using [Streamlit.io](https://streamlit.io/). The data displayed in the application is csv data downloaded from the [Missing Migrants Project](https://missingmigrants.iom.int/) and by filtering through the [Twitter API](https://developer.twitter.com/en/docs/twitter-api).
+
+The project is written in python, but exploratory data analysis are written in Jupyter notebooks (which can be found in the [exploration](./exploration/) folder).
+
+We use the following libraries:
+
+- [streamlit](https://streamlit.io/), the framework for the application
+- [pandas](https://pandas.pydata.org/), to explore and manipulate the CSV dataframes
+- [plotly](https://plotly.com/), to create the interactive map
+- [millify](https://www.npmjs.com/package/millify), to make the numbers readable (`1220098` --> `1,220,098`)
+
+## Running this repo locally
+
+The above packages will all need to be installed before being able to view the application.
+
+To start the application, run the following from the root:
+
 ```
 streamlit run src/Home.py
 ```
